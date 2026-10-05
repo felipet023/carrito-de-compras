@@ -16,7 +16,7 @@ export default function ProductCard({ producto, cantidadEnCarrito, alAgregar, al
     let numero = parseInt(texto, 10);
     if (numero === 0) {
       alAvisar('min');
-      setCantidad('1');
+      if (cantidad === '') setCantidad('1');
       return;
     }
     if (numero > producto.stock) {
@@ -30,7 +30,7 @@ export default function ProductCard({ producto, cantidadEnCarrito, alAgregar, al
     const numero = parseInt(cantidad, 10);
     if (!numero || numero < 1) {
       alAvisar('min');
-      setCantidad('1');
+      if (cantidad === '') setCantidad('1');
       return;
     }
     alAgregar(producto, numero);
@@ -59,7 +59,7 @@ export default function ProductCard({ producto, cantidadEnCarrito, alAgregar, al
         />
       </div>
       <button className="boton-agregar" onClick={agregar} disabled={sinStock}>
-        {sinStock ? 'Agotado' : 'Agregar'}
+        {'Agregar'}
       </button>
     </article>
   );

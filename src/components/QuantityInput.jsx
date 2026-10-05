@@ -1,6 +1,21 @@
+import { useEffect, useRef } from 'react';
+
 const CARACTERES_BLOQUEADOS = ['e', 'E', '+', '-', '.', ','];
 
 export default function QuantityInput({ value, onChange, onInvalid, ariaLabel, id }) {
+  const inputRef = useRef(null);
+
+  useEffect(() => {
+    const input = inputRef.current;
+    if (!input) return;
+    const bloquearRueda = (e) => {
+      e.preventDefault();
+      input.blur();
+    };
+    input.addEventListener('wheel', bloquearRueda, { passive: false });
+    return () => input.removeEventListener('wheel', bloquearRueda);
+  }, []);
+
   const manejarKeyDown = (e) => {
     if (e.ctrlKey || e.metaKey || e.altKey) return;
     if (CARACTERES_BLOQUEADOS.includes(e.key)) {
@@ -27,13 +42,9 @@ export default function QuantityInput({ value, onChange, onInvalid, ariaLabel, i
     }
   };
 
-  const manejarWheel = (e) => {
-    e.preventDefault();
-    e.target.blur();
-  };
-
   return (
     <input
+      ref={inputRef}
       type="text"
       inputMode="numeric"
       pattern="[0-9]*"
@@ -43,7 +54,6 @@ export default function QuantityInput({ value, onChange, onInvalid, ariaLabel, i
       onKeyDown={manejarKeyDown}
       onChange={manejarChange}
       onPaste={manejarPaste}
-      onWheel={manejarWheel}
     />
   );
 }

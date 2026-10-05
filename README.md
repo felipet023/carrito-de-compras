@@ -32,6 +32,8 @@ muestran mensajes emergentes (toasts), sin usar `alert()`.
 - Toasts que se cierran solos o manualmente, con botón de acción cuando aplica.
 - Botón "Agregar" deshabilitado cuando ya no quedan unidades en stock.
 - Diseño responsive y accesible (labels, aria-labels, foco visible).
+- Persistencia del carrito con localStorage.
+- Iconos con lucide-react.
 
 ## Instalación
 
