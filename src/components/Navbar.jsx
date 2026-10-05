@@ -1,4 +1,20 @@
+import { useEffect, useRef, useState } from 'react';
+import { ShoppingCart } from 'lucide-react';
+
 export default function Navbar({ totalUnidades, alAbrirCarrito }) {
+  const [animar, setAnimar] = useState(false);
+  const anterior = useRef(totalUnidades);
+
+  useEffect(() => {
+    if (totalUnidades !== anterior.current && totalUnidades > 0) {
+      setAnimar(true);
+      const t = setTimeout(() => setAnimar(false), 300);
+      anterior.current = totalUnidades;
+      return () => clearTimeout(t);
+    }
+    anterior.current = totalUnidades;
+  }, [totalUnidades]);
+
   return (
     <header className="navbar">
       <span className="navbar-marca">TIENDA PALMIRA</span>
@@ -7,13 +23,12 @@ export default function Navbar({ totalUnidades, alAbrirCarrito }) {
         aria-label="Abrir carrito de compras"
         onClick={alAbrirCarrito}
       >
-        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
-          <circle cx="9" cy="21" r="1"></circle>
-          <circle cx="20" cy="21" r="1"></circle>
-          <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
-        </svg>
+        <ShoppingCart size={26} aria-hidden="true" />
         {totalUnidades > 0 && (
-          <span className="navbar-contador" aria-label={`${totalUnidades} unidades en el carrito`}>
+          <span
+            className={`navbar-contador ${animar ? 'pulso' : ''}`}
+            aria-label={`${totalUnidades} unidades en el carrito`}
+          >
             {totalUnidades}
           </span>
         )}

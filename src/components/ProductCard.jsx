@@ -6,6 +6,7 @@ export default function ProductCard({ producto, cantidadEnCarrito, alAgregar, al
   const [cantidad, setCantidad] = useState('1');
   const restante = producto.stock - cantidadEnCarrito;
   const sinStock = restante <= 0;
+  const stockBajo = !sinStock && restante <= 3;
 
   const manejarCambio = (texto) => {
     if (texto === '') {
@@ -40,7 +41,13 @@ export default function ProductCard({ producto, cantidadEnCarrito, alAgregar, al
     <article className="tarjeta">
       <h3>{producto.nombre}</h3>
       <p className="tarjeta-precio">{formatCOP(producto.precio)}</p>
-      <p className="tarjeta-stock">Stock disponible: {Math.max(restante, 0)}</p>
+      {sinStock ? (
+        <span className="badge badge-agotado">Agotado</span>
+      ) : stockBajo ? (
+        <span className="badge badge-bajo">¡Últimas unidades! Quedan {restante}</span>
+      ) : (
+        <span className="badge badge-disponible">Disponible · {restante} en stock</span>
+      )}
       <div className="tarjeta-cantidad">
         <label htmlFor={`cantidad-${producto.id}`}>Cantidad:</label>
         <QuantityInput
@@ -52,7 +59,7 @@ export default function ProductCard({ producto, cantidadEnCarrito, alAgregar, al
         />
       </div>
       <button className="boton-agregar" onClick={agregar} disabled={sinStock}>
-        {sinStock ? 'Sin unidades disponibles' : 'Agregar'}
+        {sinStock ? 'Agotado' : 'Agregar'}
       </button>
     </article>
   );

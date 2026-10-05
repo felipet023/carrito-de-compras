@@ -1,6 +1,7 @@
 import CartItem from './CartItem';
 import PRODUCTOS from '../data/products';
 import { formatCOP } from '../utils/format';
+import { ShoppingBag, X } from 'lucide-react';
 
 export default function Cart({ carrito, abierto, alCerrar, alAumentar, alDisminuir, alCambiarCantidad, alEliminar, alAvisar }) {
   if (!abierto) return null;
@@ -21,12 +22,16 @@ export default function Cart({ carrito, abierto, alCerrar, alAumentar, alDisminu
         onClick={(e) => e.stopPropagation()}
       >
         <div className="carrito-encabezado">
-          <h2>Carrito de compras</h2>
-          <button aria-label="Cerrar carrito" onClick={alCerrar}>×</button>
+          <h2>Tu carrito</h2>
+          <button aria-label="Cerrar carrito" onClick={alCerrar}><X size={20} /></button>
         </div>
 
         {carrito.length === 0 ? (
-          <p className="carrito-vacio">Tu carrito está vacío.</p>
+          <div className="carrito-vacio">
+            <ShoppingBag size={48} aria-hidden="true" />
+            <p className="carrito-vacio-titulo">Tu carrito está vacío</p>
+            <p>Agrega algunos productos para comenzar tu compra.</p>
+          </div>
         ) : (
           <ul className="carrito-lista">
             {carrito.map((item) => {
@@ -49,7 +54,7 @@ export default function Cart({ carrito, abierto, alCerrar, alAumentar, alDisminu
 
         <div className="carrito-totales">
           <p>TOTAL DE UNIDADES: <strong>{totalUnidades}</strong></p>
-          <p>TOTAL DE COMPRA: <strong>{formatCOP(totalCompra)}</strong></p>
+          <p className="carrito-total">TOTAL DE COMPRA: <strong>{formatCOP(totalCompra)}</strong></p>
         </div>
       </aside>
     </div>
